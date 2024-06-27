@@ -34,39 +34,33 @@
                             <h2 class="fw-bold mb-5 text-uppercase">Dashboard</h2>
                             <form th:action="@{/dashboard/search}" method="get" class="mb-4">
                                 <div class="input-group">
-                                    <input type="text" name="query" class="form-control" placeholder="Search for books ...">
+                                    <input type="text" name="query" class="form-control" placeholder="Search for meals ...">
                                     <button class="btn btn-primary" type="submit">Search</button>
                                 </div>
                             </form>
                             <table class="table table-dark table-striped">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Genre</th>
-                                    <th scope="col">Pages</th>
-                                    <th scope="col">ISBN</th>
-                                    <th scope="col">Blurb</th>
-                                    <th scope="col">Picture</th>
+                                    <th scope="col">Meal</th>
+                                    <th scope="col">Restaurant</th>
+                                    <th scope="col">Number of portions</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Options</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="book : ${bookList}">
-                                    <td th:text="${book.title}" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="title=${book.title}"></td>
-                                    <td th:text="${book.genre}"></td>
-                                    <td th:text="${book.pageCount}"></td>
-                                    <td th:text="${book.ISBN}" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="title=${book.ISBN}"></td>
-                                    <td th:text="${book.blurb}" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="title=${book.blurb}"></td>
-                                    <td th:text="${book.picture}"></td>
-                                    <td th:text="${book.reserved ? 'Reserved' : 'Available'}"
-                                        th:classappend="${book.reserved ? 'reserved' : 'available'}"
-                                        th:style="${book.reserved ? 'color: red;' : 'color: green;'}">
+                                <tr th:each="meal : ${mealList}">
+                                    <td th:text="${meal.title}" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="title=${meal.title}"></td>
+                                    <td th:text="${meal.restaurant}"></td>
+                                    <td th:text="${meal.portionCount}"></td>
+                                    <td th:text="${meal.ordered ? 'Reserved' : 'Available'}"
+                                        th:classappend="${meal.ordered ? 'reserved' : 'available'}"
+                                        th:style="${meal.ordered ? 'color: red;' : 'color: green;'}">
                                     </td>
-                                    <td><a th:href="@{/book/edit/{id}(id=${book.id})}" style="text-decoration: none; cursor: pointer;">Edit</a>
-                                        | <span style="color: red; cursor: pointer;" th:attr="onclick='confirmDelete(\'' + ${book.id} + '\')'">Delete</span>
-                                        | <a th:href="@{/book/reserve/{bookId}/{userId}(bookId=${book.id}, userId=${#authentication.principal.id})}" style="text-decoration: none; cursor: pointer; color: gray;">Reserve</a>
-                                        | <a th:href="@{/book/favorite/{bookId}/{userId}(bookId=${book.id}, userId=${#authentication.principal.id})}" style="text-decoration: none; cursor: pointer; color: purple;">Like</a></td>
+                                    <td><a th:href="@{/meal/edit/{id}(id=${meal.id})}" style="text-decoration: none; cursor: pointer;">Edit</a>
+                                        | <span style="color: red; cursor: pointer;" th:attr="onclick='confirmDelete(\'' + ${meal.id} + '\')'">Delete</span>
+                                        | <a th:href="@{/meal/order/{mealId}/{userId}(mealId=${meal.id}, userId=${#authentication.principal.id})}" style="text-decoration: none; cursor: pointer; color: gray;">Order</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -79,8 +73,8 @@
 </section>
 <script>
     function confirmDelete(id) {
-        if (confirm("Are you sure you want to delete this book?")) {
-            window.location.href = "/book/delete/" + id;
+        if (confirm("Are you sure you want to delete this meal?")) {
+            window.location.href = "/meal/delete/" + id;
         }
     }
     document.addEventListener('DOMContentLoaded', function () {
